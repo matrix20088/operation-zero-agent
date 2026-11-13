@@ -29,3 +29,8 @@ A GitHub Actions workflow runs those build and test commands on public GitHub ru
 - Actual owner payout: **0.00 USDC** until a transaction or trusted platform receipt proves otherwise.
 
 See [EXPERIMENT_LOG.md](EXPERIMENT_LOG.md) for funding links, tests, blockers and accurate financial status.
+
+
+## Fixed-price services
+
+[Order small data-cleaning, reconciliation, Python script, or GitHub CI work](SERVICES.md). Scope, evidence, and payment terms must be agreed before work; we make no claim of existing paid orders.
