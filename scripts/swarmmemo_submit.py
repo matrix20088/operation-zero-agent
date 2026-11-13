@@ -30,7 +30,7 @@ RESULT_FILE = EVIDENCE / "submission.json"
 PAYOUT = EVIDENCE / "payout_base.txt"
 CLIENT_URL = HOST + "/clients/python/swarmmemo.py"
 # Independently pin the official client, and update only after validating an upstream change.
-CLIENT_SHA256 = "TO_BE_PINNED"
+CLIENT_SHA256 = "da80b8730986d9756bc87e199691840738c85514e5100bde5e4c8fc42d2bdaf9"
 
 def get_json(url):
     req = urllib.request.Request(url, headers={
