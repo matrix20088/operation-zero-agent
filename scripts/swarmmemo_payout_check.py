@@ -49,6 +49,9 @@ def main():
         print("No claim receipt exists. No payout to check.")
         return
     item=json.loads(CLAIM.read_text())
+    if item.get("status") in ("attempt_started","research_posted","reply_posted"):
+        print("A non-final submission step was attempted; no accepted claim, no payout. Manual reconciliation required.")
+        return
     if item.get("status") not in ("submitted","accepted","paid"):
         raise RuntimeError("Unrecognized submission status; no payout implied")
     address=item["payout_address"]
