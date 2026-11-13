@@ -20,13 +20,8 @@ def main():
    keylines.append({'line':i+1,'text':line[:240]})
  print('WORKER GUIDE status',x.get('status'),'length',len(doc),'relevant lines',json.dumps(keylines[:85],ensure_ascii=False))
  probes=[
-  '/v1/jobs?status=active&limit=100',
-  '/v1/jobs?limit=100',
-  '/jobs?limit=100',
-  '/api/jobs?limit=100',
-  '/v1/work/jobs?status=active&limit=100',
-  '/v1/work/jobs?limit=100',
-  '/v1/custom-jobs?limit=100',
+  '/jobs?limit=50',
+  '/jobs/available?limit=50',
  ]
  outcomes=[]
  for p in probes:
