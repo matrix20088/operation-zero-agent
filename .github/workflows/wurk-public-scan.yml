@@ -1,0 +1,25 @@
+name: Operation Zero - WURK new buyer work preflight
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/wurk_public_probe.py'
+      - '.github/workflows/wurk-public-scan.yml'
+permissions:
+  contents: read
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python scripts/wurk_public_probe.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wurk-public-scan
+          path: research/wurk/public_scan.json
+          retention-days: 2
