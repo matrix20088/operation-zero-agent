@@ -1,0 +1,41 @@
+name: Operation Zero - build original picture
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'build_art.py'
+      - 'main.py'
+      - 'test_entry.py'
+      - '.github/workflows/build-picture.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  render-and-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install artwork build tools
+        run: python -m pip install --disable-pip-version-check pillow==11.3.0 cairosvg==2.8.2
+      - name: Render original vector to PNG
+        run: python build_art.py
+      - name: Test same result twice (offline entrypoint)
+        run: python -m unittest -v test_entry.py
+      - name: Commit generated image and editable SVG
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add entry.png artwork.svg
+          if ! git diff --cached --quiet; then
+            git commit -m "Generate contest artwork from verified source"
+            git push
+          else
+            echo "Generated assets unchanged"
+          fi
