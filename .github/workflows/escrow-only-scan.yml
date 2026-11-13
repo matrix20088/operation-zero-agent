@@ -1,0 +1,28 @@
+name: Operation Zero - verify escrowed low competition gigs
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/escrow_only_scan.py'
+      - '.github/workflows/escrow-only-scan.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read live Taskmarket Base and Tempo escrow
+        run: python scripts/escrow_only_scan.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: escrow-only-scout
+          path: research/escrow_scout/latest.json
+          retention-days: 3
+          if-no-files-found: ignore
