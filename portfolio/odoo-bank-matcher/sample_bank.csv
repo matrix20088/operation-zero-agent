@@ -1,0 +1,5 @@
+bank_id,date,partner,amount,reference
+B001,2026-11-11,Acme Materials,-1250.25,TRANSFER-901
+B002,2026-11-12,Concrete Supplier,-300.00,TRANSFER-902
+B003,2026-11-12,Concrete Supplier,-300.00,TRANSFER-902
+B004,2026-11-13,Subcontractor A,-850.00,TRANSFER-903
