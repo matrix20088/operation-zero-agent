@@ -1,0 +1,26 @@
+name: Operation Zero - zero stake escrow job discovery
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/claimable_taskmarket.py'
+      - '.github/workflows/claimable-job-scan.yml'
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/claimable_taskmarket.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: no-deposit-claim-jobs
+          path: research/claimable_scout/*.json
+          retention-days: 2
