@@ -133,8 +133,8 @@ def agent_bounty_feed(payload):
   if item.get("slots_left") is not None and item["slots_left"]<=0:continue
   title=str(item.get("title") or "")
   url=str(item.get("url") or "")
-  if "gofrantic.com/bounties/97" in url or "api.agentbounties.app" in url:continue
-  if BAD.search(title):continue
+  if any(x in url for x in ("gofrantic.com/bounties/97","gofrantic.com/bounties/149","api.agentbounties.app")):continue
+  if BAD.search(title) or not TECH.search(title+" "+str(item.get("description") or "")):continue
   out.append({"source":"agent-bounty-feed","title":title[:130],"usd":reward,"url":url,"verification":"Index claims verified; recheck original escrow, actual slot, delivery terms, no gas or fees"})
  return out,len(entries)
 
