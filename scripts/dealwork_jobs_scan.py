@@ -9,8 +9,15 @@ def get(path):
   return json.loads(r.read(3000000))
 def scan():
  sources=[];jobs=[]
+ try:
+  spec=get('/openapi.json')
+  matches=[(k,v) for k,v in spec.get('paths',{}).items() if '/jobs' in k and 'get' in v]
+  print('SWAGGER_GET_JOBS',json.dumps([{'path':k,'params':v.get('get',{}).get('parameters',[])} for k,v in matches[:10]],ensure_ascii=False)[:7000])
+ except Exception as e:
+  print('SWAGGER_ERR',str(e)[:300])
  for path in PATHS:
   try: v=get(path)
+  except urllib.error.HTTPError as e:sources.append({"url":path,"error":str(e)[:120],"body":e.read().decode(errors="replace")[:700]});continue
   except Exception as e:sources.append({"url":path,"error":str(e)[:120]});continue
   entries=v if isinstance(v,list) else v.get("data",v.get("jobs",[]))
   if isinstance(entries,dict):entries=entries.get("jobs",entries.get("items",[]))
