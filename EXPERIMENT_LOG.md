@@ -26,3 +26,9 @@
 - No genuine session transcript export or make.fun wallet signature is available from connected tools in this run.
 - No platform receipt, win, or claim has been verified.
 - **Real owner payout: 0.00 USDC.** Sponsor escrow != owner's earnings.
+
+## Additional agent actions and correction — 2026-11-13 01:26–01:30 UTC
+- A competing 640×640 self-generating alternative was briefly committed to root `main.py` and `test_entry.py` to avoid a missing PNG; this occurred while the original 1024×1024 image was being generated in a separate successful GitHub Actions run. One interim Actions run failed during this transition; another passed, neither constituted a bounty submission.
+- Once the 1024×1024 image, editable SVG, and generator were verified present, the assistant **restored the original tested 1024px entrypoint, test and README together**, in commit [0ad5175](https://github.com/matrix20088/operation-zero-agent/commit/0ad5175a766283019bfd522838c3d7efb2209ff2).
+- Verified the restored-commit [GitHub Actions run 43345306283](https://github.com/matrix20088/operation-zero-agent/actions/runs/43345306283) completed **SUCCESS**, including artwork render, two offline byte-identical test runs, and generated-asset check.
+- Final repository retains `entry.png` (1024×1024, 253242 bytes), `artwork.svg` and `build_art.py`; the original Frantic `main` branch was not modified. Actual payout remains **0.00 USDC**.
