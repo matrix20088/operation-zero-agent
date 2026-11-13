@@ -13,6 +13,8 @@ SOURCES = {
  "jobbi": "https://jobbi.org/gigs.json?lane=agent&limit=700",
  "swarmmemo": "https://swarmmemo.com/api/works?kind=rewarded&limit=100",
  "taskmarket": "https://taskmarket.dev/tasks?chain=8453",
+ "agent_bounty_feed": "https://agent-bounty-feed.dailydollar.workers.dev/feed.json",
+ "bounty_radar": "https://muhib-karim.github.io/bounty-radar/bounties.json",
 }
 BAD = re.compile(r"\b(kyc|deposit required|stake required|pay a fee|must deposit|registration fee|seed phrase|first fund a bounty)\b", re.I)
 TECH = re.compile(r"\b(python|typescript|javascript|github|bug|csv|json|markdown|api|docs|test|script|data|validation|automation|documentation|fix|qa|programming)\b", re.I)
@@ -109,6 +111,47 @@ def taskmarket(raw):
   out.append({"source":"taskmarket/base","title":desc[:150],"usd":amount,"url":SOURCES["taskmarket"],"verification":"unverified: reward may be split across winners; individual escrow and rules must be checked"})
  return out[:30],len(plain)
 
+
+def agent_bounty_feed(payload):
+ out=[]
+ entries=payload.get("items",[]) if isinstance(payload,dict) else []
+ now=dt.datetime.now(dt.timezone.utc)
+ for item in entries:
+  if not isinstance(item,dict):continue
+  if str(item.get("currency","")).upper() not in ("USDC","USD","USDT"):continue
+  try:reward=float(item.get("reward",0))
+  except (ValueError,TypeError):continue
+  if not (0.01<=reward<=20):continue
+  requirements=item.get("requires") or []
+  blocked={"kyc","stake","bond","purchase","human_only","human-only","deposit","registration_fee"}
+  if set(str(x).lower() for x in requirements) & blocked:continue
+  deadline=item.get("deadline")
+  if deadline:
+   try:
+    if dt.datetime.fromisoformat(deadline.replace("Z","+00:00"))<now:continue
+   except ValueError:continue
+  if item.get("slots_left") is not None and item["slots_left"]<=0:continue
+  title=str(item.get("title") or "")
+  url=str(item.get("url") or "")
+  if "gofrantic.com/bounties/97" in url or "api.agentbounties.app" in url:continue
+  if BAD.search(title):continue
+  out.append({"source":"agent-bounty-feed","title":title[:130],"usd":reward,"url":url,"verification":"Index claims verified; recheck original escrow, actual slot, delivery terms, no gas or fees"})
+ return out,len(entries)
+
+def bounty_radar(payload):
+ out=[]
+ entries=payload.get("bounties",[]) if isinstance(payload,dict) else []
+ for item in entries:
+  if not isinstance(item,dict):continue
+  amount=item.get("amountUsd")
+  if not isinstance(amount,(int,float)) or not 1<=amount<=20:continue
+  if "site credit" in str(item.get("title","")).lower():continue
+  if item.get("openCompetingPrs",0)>2:continue
+  source=str(item.get("source") or "")
+  if source not in ("algora","opire","github-label","algora-mention"):continue
+  out.append({"source":"bounty-radar/"+source,"title":str(item.get("title",""))[:130],"usd":amount,"url":str(item.get("url") or ""),"verification":"Issue open only; escrow, reviewer authorization and payout must be verified independently"})
+ return out,len(entries)
+
 def main():
  candidates=[];checks=[];utc=dt.datetime.now(dt.timezone.utc).isoformat()
  for name,url in SOURCES.items():
@@ -118,6 +161,10 @@ def main():
     payload=json.loads(raw);selected,n=jobbi(payload)
    elif name=="swarmmemo":
     payload=json.loads(raw);selected,n=swarmmemo(payload)
+   elif name=="agent_bounty_feed":
+    payload=json.loads(raw);selected,n=agent_bounty_feed(payload)
+   elif name=="bounty_radar":
+    payload=json.loads(raw);selected,n=bounty_radar(payload)
    else:selected,n=taskmarket(raw)
    candidates.extend(selected)
    checks.append({"source":name,"scanned":n,"selected":len(selected),"schema":list(payload.keys())[:10] if name!="taskmarket" and isinstance(payload,dict) else []})
