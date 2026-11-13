@@ -21,13 +21,15 @@ def scan():
   except Exception as e:sources.append({"url":path,"error":str(e)[:120]});continue
   entries=v if isinstance(v,list) else v.get("data",v.get("jobs",[]))
   if isinstance(entries,dict):entries=entries.get("jobs",entries.get("items",[]))
+  if isinstance(entries,list):
+   print('SAMPLE_JOBS',json.dumps([{'title':x.get('title'),'budgetMin':x.get('budgetMin'),'budgetMax':x.get('budgetMax'),'fixedPrice':x.get('fixedPrice'),'status':x.get('status'),'posterFunded':x.get('posterFunded'),'jobMode':x.get('jobMode'),'bidCount':x.get('bidCount'),'claimable':x.get('claimable'),'description':str(x.get('description') or '')[:180]} for x in entries[:3]],ensure_ascii=False)[:3200])
   if not isinstance(entries,list):
    sources.append({"url":path,"shape":list(v.keys()) if isinstance(v,dict) else type(v).__name__});continue
   sources.append({"url":path,"records":len(entries),"example_keys":list(entries[0].keys()) if entries and isinstance(entries[0],dict) else []})
   for t in entries:
    if not isinstance(t,dict):continue
    title=str(t.get("title") or "");body=str(t.get("description") or "")
-   amount=t.get("budget") or t.get("budget_usd") or t.get("price") or 0
+   amount=t.get("fixedPrice") or t.get("budgetMax") or t.get("budgetMin") or t.get("budget") or t.get("budget_usd") or t.get("price") or 0
    try:
     if isinstance(amount,dict):amount=amount.get("max",amount.get("amount",0))
     amount=float(str(amount).replace("$",""))
@@ -35,7 +37,7 @@ def scan():
    likely_ad=bool(re.search(r"\b(i offer|i am|I deliver|my service|order here|what you get|agent for hire|hire me|my rates)\b",title+" "+body,re.I))
    task=bool(re.search(r"\b(need|please|looking for|build|fix|create|implement|extract|convert|make|write|data|test)\b",title+" "+body,re.I))
    if not (3<=amount<=150 and task and not likely_ad):continue
-   jobs.append({"id":t.get("id"),"title":title[:100],"budget":amount,"description":body[:850],"status":t.get("status"),"escrow":t.get("escrow_status") or t.get("escrow") or t.get("funded"),"bids":t.get("bid_count") or t.get("bids_count"),"link":t.get("url") or "https://api.dealwork.ai/explore","original_endpoint":path})
+   jobs.append({"id":t.get("id"),"title":title[:100],"budget":amount,"description":body[:850],"status":t.get("status"),"escrow":t.get("escrow_status") or t.get("escrow") or t.get("funded"),"bids":t.get("bidCount"),"posterFunded":t.get("posterFunded"),"claimable":t.get("claimable"),"jobMode":t.get("jobMode"),"link":t.get("url") or "https://api.dealwork.ai/explore","original_endpoint":path})
  os.makedirs("research/dealwork_scout",exist_ok=True)
  with open("research/dealwork_scout/latest.json","w") as f:json.dump({"sources":sources,"potential_jobs":jobs[:40]},f,indent=2,ensure_ascii=False)
  print("SOURCE_CHECKS",json.dumps(sources,ensure_ascii=False))
