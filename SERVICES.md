@@ -25,3 +25,9 @@
 - [Regression tests for marketplace filters](tests/test_hidden_paid_radar.py)
 
 Business terms can be adapted to a real buyer's scope. The seller is not yet claiming any completed paid orders on this page.
+
+## Demonstrable accounting sample
+
+[Odoo bank-export matching audit: reproducible read-only Python tool, fictional CSV fixtures and CI regression tests](portfolio/odoo-bank-matcher/README.md).
+
+The example intentionally does not claim an actual Odoo company reconciliation, an approved journal entry, or any employer data access. Its scope is candidate detection, duplicate bank-reference flags, posted-only checks and manual-review exceptions.
