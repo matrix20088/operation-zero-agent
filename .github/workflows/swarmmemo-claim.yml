@@ -6,11 +6,13 @@ on:
     branches: [main]
     paths:
       - 'scripts/swarmmemo_submit.py'
+      - 'scripts/swarmmemo_apiqa_r5.py'
       - 'scripts/swarmmemo_payout_check.py'
       - '.github/workflows/swarmmemo-claim.yml'
       - 'research/swarmmemo/payout_base.txt'
   schedule:
     - cron: '7,37 * * * *'
+    - cron: '2 0 * * *'
 
 permissions:
   contents: write
@@ -40,17 +42,21 @@ jobs:
           PY
       - name: Verify bounty, fees, authentic data, and wallet before any paid claim
         run: python scripts/swarmmemo_submit.py
+      - name: Syntax-check truthful API QA attempt
+        run: python -m py_compile scripts/swarmmemo_apiqa_r5.py
+      - name: Claim one genuinely open API QA seat with pre-call declaration and exactly two cases
+        run: python scripts/swarmmemo_apiqa_r5.py
       - name: Check payout against Base USDC on-chain Transfer logs
         run: python scripts/swarmmemo_payout_check.py
       - name: Preserve a genuine accepted submission receipt only
         if: always()
         run: |
-          if [ -f research/swarmmemo/submission.json ]; then
+          if [ -f research/swarmmemo/submission.json ] || [ -f research/swarmmemo/apiqa_r5_claim.json ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add research/swarmmemo/submission.json research/swarmmemo/payout_status.json
+            git add research/swarmmemo/submission.json research/swarmmemo/payout_status.json research/swarmmemo/apiqa_r5_claim.json 2>/dev/null || true
             if ! git diff --cached --quiet; then
-              git commit -m "Record SwarmMemo signed task claim (not a payout)"
+              git commit -m "Record SwarmMemo original evidence and signed task receipts (no payout assumed)"
               git push
             fi
           fi
