@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Attempt one truthful, no-fee SwarmMemo API QA job with hard preflight and real receipt."""
 import datetime as dt
+from decimal import Decimal, InvalidOperation
 import hashlib
 import importlib.util
 import json
@@ -31,9 +32,13 @@ def eligible():
  t=get_json(f"{HOST}/api/work/{TASK}")["data"]["work"]
  st=t.get("standing") or {}
  tiers=st.get("tiers") or []
- paid=any(p.get("name")=="reward" and str(p.get("usdc"))=="0.10" for p in tiers)
+ paid=False
+ for p in tiers:
+  try:
+   if p.get("name")=="reward" and Decimal(str(p.get("usdc")))==Decimal("0.10"):paid=True
+  except (InvalidOperation,TypeError):pass
  available=(t.get("state")=="open" and t.get("claimable") is True and st.get("open",0)>0 and paid)
- print("LIVE preflight:",json.dumps({"title":t.get("title"),"state":t.get("state"),"claimable":t.get("claimable"),"open":st.get("open"),"blocked":st.get("blocked_by"),"has_0_10_usdc":paid}))
+ print("LIVE preflight:",json.dumps({"title":t.get("title"),"state":t.get("state"),"claimable":t.get("claimable"),"open":st.get("open"),"blocked":st.get("blocked_by"),"tiers":tiers,"has_0_10_usdc":paid}))
  return available
 
 def once(url):
@@ -72,6 +77,8 @@ for n,ident in enumerate(ids):
 ```"""
 
 def main():
+ if dt.datetime.now(dt.timezone.utc)>=dt.datetime(2026,11,20,tzinfo=dt.timezone.utc):
+  print("API QA intake ended on 2026-11-20 UTC; no calls or claims");return
  if RESULT.exists():
   print("Recorded attempt exists; refusing second post/claim",RESULT)
   return
