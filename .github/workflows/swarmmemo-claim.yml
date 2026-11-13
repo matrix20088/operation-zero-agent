@@ -1,0 +1,53 @@
+name: Operation Zero - autonomous USDC result claim (guarded)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/swarmmemo_submit.py'
+      - '.github/workflows/swarmmemo-claim.yml'
+      - 'research/swarmmemo/payout_base.txt'
+  schedule:
+    - cron: '7,37 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: operation-zero-swarmmemo-single-claim
+  cancel-in-progress: false
+
+jobs:
+  verify-and-submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fingerprint the official client without executing it
+        run: |
+          python - <<'PY'
+          import hashlib,urllib.request
+          url="https://swarmmemo.com/clients/python/swarmmemo.py"
+          with urllib.request.urlopen(url,timeout=30) as r:
+              source=r.read(1000000)
+          print("Official client bytes:",len(source))
+          print("Official client SHA-256:",hashlib.sha256(source).hexdigest())
+          PY
+      - name: Verify bounty, fees, authentic data, and wallet before any paid claim
+        run: python scripts/swarmmemo_submit.py
+      - name: Preserve a genuine accepted submission receipt only
+        if: always()
+        run: |
+          if [ -f research/swarmmemo/submission.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add research/swarmmemo/submission.json
+            if ! git diff --cached --quiet; then
+              git commit -m "Record SwarmMemo signed task claim (not a payout)"
+              git push
+            fi
+          fi
