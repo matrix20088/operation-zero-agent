@@ -88,10 +88,9 @@ def main():
     args=parser.parse_args()
     if RESULT_FILE.exists():
         current=json.loads(RESULT_FILE.read_text())
-        if current.get("status") in ("submitted","accepted","paid"):
-            print("Already submitted, recorded result:",current.get("reply_id"),"NO REPEAT.")
-            return
-        raise RuntimeError("Submission evidence exists with unknown status; human audit required")
+        print("Existing submission attempt:",current.get("status"),"result:",current.get("reply_id"),
+              "NO AUTO RETRY OR DUPLICATE POST. Resolve manually.")
+        return
     brief=prepare_brief()
     if not eligible_work():
         print("NO OPEN SEAT; no public posts and no claim.")
@@ -124,11 +123,22 @@ def main():
         key = official.crypto()[0].generate()
         public_id=hashlib.sha256(official.public_bytes(key)).hexdigest()
         agent=official.Client(key=key)
+        # Stop automatic retries once any external mutation may occur.
+        # The runner commits this record in an always() step even if a later API call fails.
+        record={"status":"attempt_started","task_id":TASK_ID,"agent_id":public_id,
+                "payout_address":wallet,"network":"Base","target_usdc":"0.02",
+                "payout_proven":False,"payout_usdc":"0",
+                "note":"No acceptance or payment implied; do not retry if status is uncertain."}
+        def checkpoint(status, **fields):
+            record.update({"status":status,**fields})
+            RESULT_FILE.write_text(json.dumps(record,indent=2,ensure_ascii=False)+"\n")
+        checkpoint("attempt_started")
         # Strictly no multiple results, no duplicate or invented observation.
         research=agent.post("research","main",brief,format="markdown")
         if research.get("ok") is not True or not research.get("receipt",{}).get("id"):
             raise RuntimeError("Research post returned no receipt")
         research_id=research["receipt"]["id"]
+        checkpoint("research_posted",research_id=research_id,research_url=HOST+"/e/"+research_id)
         reply=agent.post("bounties","main",
             "Original NOAA KDEN public-data brief: "+HOST+"/e/"+research_id+
             "\nDataset noaa_station_daily station=KDEN limit=8; signed notary seq 2743 (full response) and 2744 (canonical data)."+
@@ -138,16 +148,11 @@ def main():
         if reply.get("ok") is not True or not reply.get("receipt",{}).get("id"):
             raise RuntimeError("Bounty thread reply returned no receipt; NOT claimed")
         reply_id=reply["receipt"]["id"]
+        checkpoint("reply_posted",reply_id=reply_id,reply_url=HOST+"/e/"+reply_id)
         claimed=agent.work_claim(TASK_ID,result_id=reply_id,payout_address=wallet)
         if claimed.get("ok") is not True:
             raise RuntimeError("Work claim refused: "+json.dumps(claimed)[:1500])
-        record={"status":"submitted","task_id":TASK_ID,"agent_id":public_id,
-            "research_id":research_id,"research_url":HOST+"/e/"+research_id,
-            "reply_id":reply_id,"reply_url":HOST+"/e/"+reply_id,
-            "payout_address":wallet,"network":"Base","target_usdc":"0.02",
-            "claim_reply":claimed, "payout_proven":False,"payout_usdc":"0",
-            "note":"The platform accepted submission, not proof of prize acceptance or payout."}
-        RESULT_FILE.write_text(json.dumps(record,indent=2,ensure_ascii=False)+"\n")
+        checkpoint("submitted", claim_reply=claimed)
         print("OFFICIAL SUBMISSION RECEIPT",reply_id,"PUBLIC RESEARCH",research_id)
         print("Payout received: 0 USDC (until proved by Base tx)")
 
