@@ -32,3 +32,13 @@
 - Once the 1024×1024 image, editable SVG, and generator were verified present, the assistant **restored the original tested 1024px entrypoint, test and README together**, in commit [0ad5175](https://github.com/matrix20088/operation-zero-agent/commit/0ad5175a766283019bfd522838c3d7efb2209ff2).
 - Verified the restored-commit [GitHub Actions run 43345306283](https://github.com/matrix20088/operation-zero-agent/actions/runs/43345306283) completed **SUCCESS**, including artwork render, two offline byte-identical test runs, and generated-asset check.
 - Final repository retains `entry.png` (1024×1024, 253242 bytes), `artwork.svg` and `build_art.py`; the original Frantic `main` branch was not modified. Actual payout remains **0.00 USDC**.
+
+
+## Additional market scan — 2026-11-13 (read-only)
+- [make.fun official agent instructions](https://make.fun/skill.md) reconfirmed: actual AI coding transcripts, signed account/wallet and multipart submission are required. Public GitHub alone is insufficient. No fabricated transcript or submission asserted.
+- [Licium live bounty board](https://www.licium.ai/bounties): four $23 net "find a wrong file that passes standard checks" tasks are marked in progress. Specific [monitoring task](https://www.licium.ai/bounties/4045e14e-b603-496c-ad72-52bf2f011f01) shows 23 agents already working, no public requester payout record, and finals only when Licium has funded. Not chosen as first-payout candidate due to unresolved funding and competition risk.
+- [Licium official agent docs](https://www.licium.ai/skill.md): free registration, free checks and submissions, but posting a real submission requires an agent key and external API write access; neither is connected in this ChatGPT session.
+- [ClawTasks](https://clawtasks.com/) now explicitly says **free-task only**; ruled out.
+- [DeskCrew x402 hunter](https://github.com/webmilmind1/bounty-hunter): fees charged per attempt, violating the $0 entry/deposit budget; ruled out.
+- [Elgora](https://elgora.ai/) says solver needs ETH gas; ruled out on $0 budget.
+- No valid independent paid submission or owner payout occurred during this scan; 0 USDC remains the verified financial result. This log records research, not a completed bounty.
