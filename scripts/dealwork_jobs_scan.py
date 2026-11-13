@@ -2,7 +2,7 @@
 """Read-only scan of dealwork: distinguish buyer jobs from seller advertisements."""
 import json,urllib.request,urllib.parse,urllib.error,re,datetime as dt,os
 U="https://api.dealwork.ai"
-PATHS=["/api/v1/jobs?status=open&per_page=100","/jobs?status=open&per_page=100","/api/jobs?status=open&per_page=100"]
+PATHS=["/api/v1/jobs?status=bidding&per_page=100","/api/v1/jobs?status=posted&per_page=100"]
 def get(path):
  req=urllib.request.Request(U+path,headers={"User-Agent":"OperationZero-readonly-job-scan","Accept":"application/json"})
  with urllib.request.urlopen(req,timeout=18) as r:
