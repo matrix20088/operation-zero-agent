@@ -8,7 +8,7 @@ def get(path):
  with urllib.request.urlopen(req,timeout=18) as r:
   return json.loads(r.read(3000000))
 def scan():
- sources=[];jobs=[]
+ sources=[];jobs=[];funded=[]
  try:
   spec=get('/openapi.json')
   matches=[(k,v) for k,v in spec.get('paths',{}).items() if '/jobs' in k and 'get' in v]
@@ -25,7 +25,14 @@ def scan():
    print('SAMPLE_JOBS',json.dumps([{'title':x.get('title'),'budgetMin':x.get('budgetMin'),'budgetMax':x.get('budgetMax'),'fixedPrice':x.get('fixedPrice'),'status':x.get('status'),'posterFunded':x.get('posterFunded'),'jobMode':x.get('jobMode'),'bidCount':x.get('bidCount'),'claimable':x.get('claimable'),'description':str(x.get('description') or '')[:180]} for x in entries[:3]],ensure_ascii=False)[:3200])
   if not isinstance(entries,list):
    sources.append({"url":path,"shape":list(v.keys()) if isinstance(v,dict) else type(v).__name__});continue
-  sources.append({"url":path,"records":len(entries),"example_keys":list(entries[0].keys()) if entries and isinstance(entries[0],dict) else []})
+  funded_rows=[t for t in entries if isinstance(t,dict) and t.get("posterFunded") is True]
+  sources.append({"url":path,"records":len(entries),"funded_count":len(funded_rows),"claimable_funded_count":sum(1 for t in funded_rows if t.get("claimable") is True),"example_keys":list(entries[0].keys()) if entries and isinstance(entries[0],dict) else []})
+  for t in funded_rows:
+   try: budget=float(t.get("fixedPrice") or t.get("budgetMax") or t.get("budgetMin") or 0)
+   except (ValueError,TypeError):budget=0
+   if not (1<=budget<=200):continue
+   if str(t.get("eligibleWorkerTypes") or "").lower()=="human_only":continue
+   funded.append({"title":t.get("title"),"budget":budget,"id":t.get("id"),"description":str(t.get("description") or "")[:2000],"poster":t.get("posterDisplayName"),"posterType":t.get("posterType"),"mode":t.get("jobMode"),"status":t.get("status"),"bids":t.get("bidCount"),"claimable":t.get("claimable"),"eligibleWorkerTypes":t.get("eligibleWorkerTypes"),"remainingSlots":t.get("remainingSlots"),"acceptanceCriteria":t.get("acceptanceCriteria"),"deadline":t.get("deadline")})
   for t in entries:
    if not isinstance(t,dict):continue
    title=str(t.get("title") or "");body=str(t.get("description") or "")
@@ -39,9 +46,11 @@ def scan():
    if not (3<=amount<=150 and task and not likely_ad):continue
    jobs.append({"id":t.get("id"),"title":title[:100],"budget":amount,"description":body[:850],"status":t.get("status"),"escrow":t.get("escrow_status") or t.get("escrow") or t.get("funded"),"bids":t.get("bidCount"),"posterFunded":t.get("posterFunded"),"claimable":t.get("claimable"),"jobMode":t.get("jobMode"),"link":t.get("url") or "https://api.dealwork.ai/explore","original_endpoint":path})
  os.makedirs("research/dealwork_scout",exist_ok=True)
- with open("research/dealwork_scout/latest.json","w") as f:json.dump({"sources":sources,"potential_jobs":jobs[:40]},f,indent=2,ensure_ascii=False)
+ with open("research/dealwork_scout/latest.json","w") as f:json.dump({"sources":sources,"potential_jobs":jobs[:40],"funded_jobs":funded},f,indent=2,ensure_ascii=False)
  print("SOURCE_CHECKS",json.dumps(sources,ensure_ascii=False))
  print("POTENTIAL_BUYER_JOBS",len(jobs))
+ print("FUNDED_BUYER_OPPORTUNITIES",len(funded))
+ for item in funded[:25]:print("FUNDED",json.dumps(item,ensure_ascii=False))
  for job in jobs[:25]:print("JOB",json.dumps(job,ensure_ascii=False))
  if not jobs:print("No verified buyer job found through public API; no bidding or payment")
 if __name__=="__main__":scan()
