@@ -1,0 +1,23 @@
+name: Operation Zero - live funded action preflight
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/live_funded_preflight.py', '.github/workflows/live-funded-preflight.yml']
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python scripts/live_funded_preflight.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-funded-task-preflight
+          path: research/funded_preflight/latest.json
+          retention-days: 2
