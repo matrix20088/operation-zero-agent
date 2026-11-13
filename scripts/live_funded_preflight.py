@@ -45,10 +45,10 @@ def main():
    results=[]
    for item in records:
     if not isinstance(item,dict):continue
-    words=str(item.get("title",""))+" "+str(item.get("description",""))
+    words=str(item.get("title",""))+" "+str(item.get("description",""))+" "+str(item.get("instructions",""))
     if re.search(r"Python|coding|data|research|analysis|software|csv|audit|API|documentation|web|report|automation|typescript|script",words,re.I):
-     results.append({k:item.get(k) for k in ("id","title","status","budget","reward","price","payout","escrowStatus","escrow_tx","escrowTxHash","funded","assigned_to","deadline","category","type","created_at") if k in item})
-     results[-1]["brief"]=str(item.get("description",""))[:1300]
+     results.append({k:item.get(k) for k in ("id","title","status","budget","budgetUsdc","bounty_usd","reward","price","payout","payment_token","payment_network","escrowStatus","escrow_status","escrow_tx","escrowTxHash","funded","assigned_to","deadline","category","type","target_executor_type","required_roles","min_reputation","location_hint","location_lat","location_lng","created_at") if k in item})
+     results[-1]["brief"]=str(item.get("instructions") or item.get("description") or "")[:1300]
    out["sources"][name]={"http":result.get("http"),"error":result.get("error"),
        "total_records":len(records),"sample_keys":list(records[0].keys()) if records and isinstance(records[0],dict) else [],
        "filtered":results[:25],"other_shape":list(data)[:14] if isinstance(data,dict) else None}
