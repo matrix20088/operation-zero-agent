@@ -1,0 +1,33 @@
+name: Operation Zero - stamp real NOAA observation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/swarmmemo_stamp.py'
+      - '.github/workflows/swarmmemo-stamp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source bytes and stamp their hashes (free)
+        run: python scripts/swarmmemo_stamp.py
+      - name: Commit sealed evidence and submission-ready brief
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/swarmmemo/kden_stamps.json research/swarmmemo/kden_brief.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Notarize official NOAA dataset and prepare bounty brief"
+            git push
+          fi
