@@ -18,7 +18,7 @@
 1. Verified authenticated GitHub user matrix20088 and that this repo is PUBLIC with push permission.
 2. Uploaded Python standard-library-only main.py, standalone regression test and MIT LICENSE.
 3. Uploaded original vector illustration generator build_art.py.
-4. Configured workflow to generate optimized PNG/artwork.svg and commit them using hosted GitHub Actions. Check the workflow run and commit before treating this as complete.
+4. GitHub Actions rendered the original artwork, tested two byte-identical offline runs, and committed entry.png/artwork.svg successfully. Run: https://github.com/matrix20088/operation-zero-agent/actions/runs/43344699964 (SUCCESS). Output commit: f952032c643c7f521acdb1429c86ab87d588a389.
 5. Local render SHA-256 2384ebc4fac2e04850435e68aa35c6d0b3cda3abb246f647e10775744e10caea, 253242 bytes; GitHub Actions generated a 253242-byte PNG at https://github.com/matrix20088/operation-zero-agent/blob/main/entry.png and passed the 2-run byte-identity test. Per-file SHA-256 of remote PNG can be verified by downloading it.
 
 ## Submission and payment
