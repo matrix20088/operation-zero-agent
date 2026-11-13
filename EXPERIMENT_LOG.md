@@ -19,7 +19,7 @@
 2. Uploaded Python standard-library-only main.py, standalone regression test and MIT LICENSE.
 3. Uploaded original vector illustration generator build_art.py.
 4. Configured workflow to generate optimized PNG/artwork.svg and commit them using hosted GitHub Actions. Check the workflow run and commit before treating this as complete.
-5. Original local render generated 1024x1024 PNG with SHA-256 2384ebc4fac2e04850435e68aa35c6d0b3cda3abb246f647e10775744e10caea, 253242 bytes. This is local provenance, NOT yet evidence of remote artifact until GitHub workflow passes.
+5. Local render SHA-256 2384ebc4fac2e04850435e68aa35c6d0b3cda3abb246f647e10775744e10caea, 253242 bytes; GitHub Actions generated a 253242-byte PNG at https://github.com/matrix20088/operation-zero-agent/blob/main/entry.png and passed the 2-run byte-identity test. Per-file SHA-256 of remote PNG can be verified by downloading it.
 
 ## Submission and payment
 - A GitHub repository does NOT imply official make.fun submission.
