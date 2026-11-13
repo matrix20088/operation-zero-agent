@@ -1,0 +1,35 @@
+name: Operation Zero - hidden paid gig radar (read only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hidden_paid_radar.py'
+      - 'tests/test_hidden_paid_radar.py'
+      - '.github/workflows/hidden-paid-radar.yml'
+  schedule:
+    - cron: '47 5,17 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test money vs credit and eligibility filters
+        run: python -m unittest discover -s tests -p test_hidden_paid_radar.py -v
+      - name: Scan Jobbi, SwarmMemo and Taskmarket Base (public read only)
+        run: python scripts/hidden_paid_radar.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hidden-paid-radar-evidence
+          path: research/hidden_radar/latest.*
+          retention-days: 3
+          if-no-files-found: ignore
