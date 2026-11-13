@@ -67,7 +67,11 @@ def jobbi(payload):
    for key in ("_jobbi","_gig","metadata"):
     if isinstance(item.get(key),dict): value=cash(item[key]);break
   if value is None or not (0.01<=value<=20): continue
-  out.append({"source":"jobbi/"+str(item.get("source") or item.get("board") or "?"),"title":name[:130],"usd":value,"url":str(item.get("url") or item.get("external_url") or ""),"verification":"unverified: inspect original posting and escrow"})
+  url=str(item.get("url") or item.get("external_url") or "")
+  # BountyBook's public board has no escrowed listings and repeated payout failures.
+  # AgentBounties' legacy "funded" issues have no currently claimable-live issues.
+  if any(domain in url.lower() for domain in ("api.bountybook.ai/", "api.agentbounties.app/", "oss.issuehunt.io/")): continue
+  out.append({"source":"jobbi/"+str(item.get("source") or item.get("board") or "?"),"title":name[:130],"usd":value,"url":url,"verification":"unverified: inspect original posting and escrow"})
  return out,len(entries)
 
 def swarmmemo(payload):
