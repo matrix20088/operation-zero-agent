@@ -1,0 +1,4 @@
+ledger_id,date,partner,amount,reference,status
+L001,2026-11-10,ACME MATERIALS,-1250.25,BILL-001,posted
+L002,2026-11-09,Concrete Supplier,-300.00,BILL-002,posted
+L003,2026-11-09,Subcontractor A,-850.00,BILL-003,draft
