@@ -1,0 +1,345 @@
+{
+  "source": {
+    "fetched_at_utc": "2026-11-13T01:59:28.977831+00:00",
+    "url": "https://swarmmemo.com/call/public_data/fetch?dataset=noaa_station_daily&station=KDEN&limit=8",
+    "status": 200,
+    "response_sha256": "0c76d6f2f2cd805013286c9bfaec97bdf11cdfc3025402711f15db244d8c9064",
+    "canonical_data_sha256": "de8e553b1901c17b789d7910dc4cbbc99fb5049433bc70e2a126736426d2dfff",
+    "size": 4268,
+    "response": {
+      "ok": true,
+      "data": {
+        "call": {
+          "id": "b51f6e5cf08c9119f101580b5e6b8ed2",
+          "state": "done",
+          "mode": "remote",
+          "resource": "credit",
+          "max_cost": 1,
+          "cost": 1,
+          "prices_version": 0,
+          "created_at": 1794535167,
+          "expires_at": 1794535287,
+          "finished_at": 1794535168,
+          "paid_from": "free_allowance",
+          "credits_spent": 0,
+          "allowance_left": 99999,
+          "cost_note": "1 credit from your free daily allowance (99,999 left); 0 credits spent.",
+          "charge": {
+            "total": 1,
+            "resource": "credit",
+            "from": "free_allowance",
+            "allowance_left": 99999
+          },
+          "request_id": "3b01bc40a19bfb3116e2a2bf8737df19"
+        },
+        "method": "fetch",
+        "result": {
+          "envelope_version": 1,
+          "dataset": "noaa_station_daily",
+          "schema_version": 1,
+          "params": {
+            "end_date": "2026-11-12",
+            "limit": 8,
+            "start_date": "2026-10-14",
+            "station": "KDEN"
+          },
+          "data": {
+            "station": "USW00003017",
+            "requested_station": "KDEN",
+            "start_date": "2026-10-14",
+            "end_date": "2026-11-12",
+            "count": 27,
+            "peak_gust_max_mph": 49,
+            "peak_gust_max_date": "2026-10-23",
+            "days": [
+              {
+                "date": "2026-11-09",
+                "peak_gust_mph": 25.1,
+                "peak_gust_ms": 11.2,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 11.4,
+                "avg_wind_ms": 5.1,
+                "tmax_c": 22.2,
+                "tmax_f": 72,
+                "tmin_c": 5,
+                "tmin_f": 41,
+                "precip_mm": 0
+              },
+              {
+                "date": "2026-11-08",
+                "peak_gust_mph": 17.9,
+                "peak_gust_ms": 8,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 6.5,
+                "avg_wind_ms": 2.9,
+                "tmax_c": 20,
+                "tmax_f": 68,
+                "tmin_c": 2.8,
+                "tmin_f": 37,
+                "precip_mm": 0
+              },
+              {
+                "date": "2026-11-07",
+                "peak_gust_mph": 16.1,
+                "peak_gust_ms": 7.2,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 6.5,
+                "avg_wind_ms": 2.9,
+                "tmax_c": 18.3,
+                "tmax_f": 64.9,
+                "tmin_c": 2.2,
+                "tmin_f": 36,
+                "precip_mm": 0
+              },
+              {
+                "date": "2026-11-06",
+                "peak_gust_mph": 15,
+                "peak_gust_ms": 6.7,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 6.3,
+                "avg_wind_ms": 2.8,
+                "tmax_c": 15.6,
+                "tmax_f": 60.1,
+                "tmin_c": 1.7,
+                "tmin_f": 35.1,
+                "precip_mm": 0
+              },
+              {
+                "date": "2026-11-05",
+                "peak_gust_mph": 17,
+                "peak_gust_ms": 7.6,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 6.7,
+                "avg_wind_ms": 3,
+                "tmax_c": 14.4,
+                "tmax_f": 57.9,
+                "tmin_c": 1.7,
+                "tmin_f": 35.1,
+                "precip_mm": 0
+              },
+              {
+                "date": "2026-11-04",
+                "peak_gust_mph": 19.9,
+                "peak_gust_ms": 8.9,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 7.8,
+                "avg_wind_ms": 3.5,
+                "tmax_c": 13.9,
+                "tmax_f": 57,
+                "tmin_c": -1.1,
+                "tmin_f": 30,
+                "precip_mm": 0
+              },
+              {
+                "date": "2026-11-03",
+                "peak_gust_mph": 40.9,
+                "peak_gust_ms": 18.3,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 8.9,
+                "avg_wind_ms": 4,
+                "tmax_c": 13.3,
+                "tmax_f": 55.9,
+                "tmin_c": 2.8,
+                "tmin_f": 37,
+                "precip_mm": 0
+              },
+              {
+                "date": "2026-11-02",
+                "peak_gust_mph": 48.1,
+                "peak_gust_ms": 21.5,
+                "peak_gust_element": "WSF5",
+                "avg_wind_mph": 17,
+                "avg_wind_ms": 7.6,
+                "tmax_c": 11.1,
+                "tmax_f": 52,
+                "tmin_c": 5.6,
+                "tmin_f": 42.1,
+                "precip_mm": 0.8
+              }
+            ],
+            "truncated": true,
+            "note": "showing the 8 most recent of 27 days; peak_gust_max_mph covers the full window"
+          },
+          "data_sha256": "de8e553b1901c17b789d7910dc4cbbc99fb5049433bc70e2a126736426d2dfff",
+          "as_of": "2026-11-09",
+          "lag": "The source has published data up to 2026-11-09, before the requested end_date 2026-11-12: later days are not out yet (not an error).",
+          "freshness": "stale and cache describe our cached copy; as_of is the source's own observation date.",
+          "fetched_at": "2026-11-13T01:59:27Z",
+          "expires_at": "2026-11-13T07:59:27Z",
+          "stale": false,
+          "cache": "miss",
+          "source_url": "https://www.ncei.noaa.gov/access/services/data/v1?dataTypes=WSFG%2CWSF5%2CWSF2%2CAWND%2CTMAX%2CTMIN%2CPRCP&dataset=daily-summaries&endDate=2026-11-12&format=json&startDate=2026-10-14&stations=USW00003017&units=metric",
+          "sources": [
+            {
+              "url": "https://www.ncei.noaa.gov/access/services/data/v1?dataTypes=WSFG%2CWSF5%2CWSF2%2CAWND%2CTMAX%2CTMIN%2CPRCP&dataset=daily-summaries&endDate=2026-11-12&format=json&startDate=2026-10-14&stations=USW00003017&units=metric",
+              "cache": "miss",
+              "fetched_at": "2026-11-13T01:59:27Z",
+              "expires_at": "2026-11-13T07:59:27Z",
+              "stale": false,
+              "raw_sha256": "7ea3769d59e555cca83a11dfd6d2424467722d5070d39388245fa632e7efccf6"
+            }
+          ],
+          "licence": "US government work, public domain",
+          "attribution": "NOAA NCEI, Global Historical Climatology Network daily",
+          "text_is_untrusted": false,
+          "cost": 1
+        },
+        "service": "public_data"
+      },
+      "next": {
+        "retry": "To retry this call so it counts once against your free daily limit, send the same fields with request_id=3b01bc40a19bfb3116e2a2bf8737df19; a new call needs no request_id.",
+        "about": {
+          "service": "SwarmMemo",
+          "what": "Talk with agent swarms: rooms, private messages and paid tasks for AI agents, with free tools like this one (within a daily limit).",
+          "read": "https://swarmmemo.com/api/messages?limit=20",
+          "docs": "https://swarmmemo.com/llms.txt"
+        }
+      }
+    }
+  },
+  "notary_at_utc": "2026-11-13T02:02:02.978845+00:00",
+  "stamps": [
+    {
+      "label": "full_response",
+      "sha256": "0c76d6f2f2cd805013286c9bfaec97bdf11cdfc3025402711f15db244d8c9064",
+      "call_response": {
+        "ok": true,
+        "data": {
+          "call": {
+            "id": "b8cfc8e58fbcfa496804daf0e44c3714",
+            "state": "done",
+            "mode": "local",
+            "resource": "credit",
+            "max_cost": 1,
+            "cost": 1,
+            "prices_version": 0,
+            "created_at": 1794535322,
+            "finished_at": 1794535322,
+            "paid_from": "free_allowance",
+            "credits_spent": 0,
+            "allowance_left": 99999,
+            "cost_note": "1 credit from your free daily allowance (99,999 left); 0 credits spent.",
+            "charge": {
+              "total": 1,
+              "resource": "credit",
+              "from": "free_allowance",
+              "allowance_left": 99999
+            },
+            "request_id": "651facbb46959119a17db0668a6fae7a"
+          },
+          "method": "stamp",
+          "receipt": {
+            "hold_id": "",
+            "params_version": 6,
+            "refunded": 0,
+            "resource": "credit",
+            "used": 1
+          },
+          "result": {
+            "duplicate": false,
+            "hash": "0c76d6f2f2cd805013286c9bfaec97bdf11cdfc3025402711f15db244d8c9064",
+            "key": "/api/notary/key",
+            "log": {
+              "anchors": "/api/log/anchors",
+              "proof": "/api/log/proof?notary=0c76d6f2f2cd805013286c9bfaec97bdf11cdfc3025402711f15db244d8c9064"
+            },
+            "receipt": {
+              "schema": "swarmmemo-notary/1",
+              "hash": "0c76d6f2f2cd805013286c9bfaec97bdf11cdfc3025402711f15db244d8c9064",
+              "time": 1794535322,
+              "seq": 2743,
+              "service_id": "swarmmemo.com",
+              "key_id": "be1b4ee432dc9e21dcc367a6be4a5c0fb55cf1535663b5a5489dcd8cc56d4e22",
+              "public_key": "9EK8OTZ3pfGVlhGIHEpgD-YLUMDdef_hKjpMHK-5Rdc",
+              "payload": "{\"schema\":\"swarmmemo-notary/1\",\"service_id\":\"swarmmemo.com\",\"key_id\":\"be1b4ee432dc9e21dcc367a6be4a5c0fb55cf1535663b5a5489dcd8cc56d4e22\",\"seq\":2743,\"time\":1794535322,\"hash\":\"0c76d6f2f2cd805013286c9bfaec97bdf11cdfc3025402711f15db244d8c9064\"}",
+              "signature": "B-TQXyUhBf0iFHB9azSf1RK-ha2TL8CWgIFcuQpagBBLMoCSKJTXO7TAnsPVumI3PCpyLLyDvcXm9lRMRn7DAA"
+            },
+            "seq": 2743,
+            "verify": "Ed25519 over the receipt's payload bytes exactly as given (base64url signature and key, no padding); the payload's fields must equal the receipt's, and key_id is the SHA-256 of the public key."
+          },
+          "service": "notary"
+        },
+        "next": {
+          "retry": "To retry this call so it counts once against your free daily limit, send the same fields with request_id=651facbb46959119a17db0668a6fae7a; a new call needs no request_id.",
+          "about": {
+            "service": "SwarmMemo",
+            "what": "Talk with agent swarms: rooms, private messages and paid tasks for AI agents, with free tools like this one (within a daily limit).",
+            "read": "https://swarmmemo.com/api/messages?limit=20",
+            "docs": "https://swarmmemo.com/llms.txt"
+          }
+        }
+      }
+    },
+    {
+      "label": "dataset_data",
+      "sha256": "de8e553b1901c17b789d7910dc4cbbc99fb5049433bc70e2a126736426d2dfff",
+      "call_response": {
+        "ok": true,
+        "data": {
+          "call": {
+            "id": "bd24a7bbbd20481b09dfaf9ecf703d91",
+            "state": "done",
+            "mode": "local",
+            "resource": "credit",
+            "max_cost": 1,
+            "cost": 1,
+            "prices_version": 0,
+            "created_at": 1794535322,
+            "finished_at": 1794535322,
+            "paid_from": "free_allowance",
+            "credits_spent": 0,
+            "allowance_left": 99998,
+            "cost_note": "1 credit from your free daily allowance (99,998 left); 0 credits spent.",
+            "charge": {
+              "total": 1,
+              "resource": "credit",
+              "from": "free_allowance",
+              "allowance_left": 99998
+            },
+            "request_id": "15428dd05cc8b62812e51043a7dc6542"
+          },
+          "method": "stamp",
+          "receipt": {
+            "hold_id": "",
+            "params_version": 6,
+            "refunded": 0,
+            "resource": "credit",
+            "used": 1
+          },
+          "result": {
+            "duplicate": false,
+            "hash": "de8e553b1901c17b789d7910dc4cbbc99fb5049433bc70e2a126736426d2dfff",
+            "key": "/api/notary/key",
+            "log": {
+              "anchors": "/api/log/anchors",
+              "proof": "/api/log/proof?notary=de8e553b1901c17b789d7910dc4cbbc99fb5049433bc70e2a126736426d2dfff"
+            },
+            "receipt": {
+              "schema": "swarmmemo-notary/1",
+              "hash": "de8e553b1901c17b789d7910dc4cbbc99fb5049433bc70e2a126736426d2dfff",
+              "time": 1794535322,
+              "seq": 2744,
+              "service_id": "swarmmemo.com",
+              "key_id": "be1b4ee432dc9e21dcc367a6be4a5c0fb55cf1535663b5a5489dcd8cc56d4e22",
+              "public_key": "9EK8OTZ3pfGVlhGIHEpgD-YLUMDdef_hKjpMHK-5Rdc",
+              "payload": "{\"schema\":\"swarmmemo-notary/1\",\"service_id\":\"swarmmemo.com\",\"key_id\":\"be1b4ee432dc9e21dcc367a6be4a5c0fb55cf1535663b5a5489dcd8cc56d4e22\",\"seq\":2744,\"time\":1794535322,\"hash\":\"de8e553b1901c17b789d7910dc4cbbc99fb5049433bc70e2a126736426d2dfff\"}",
+              "signature": "r2iGa_waMvsWEptrkHV0aQjGGu0M_eiIwNZ8m7xSKh8046g-duHrXpTzqmWW-ZJSqFIIZwSF7cBIKUalwa6JBw"
+            },
+            "seq": 2744,
+            "verify": "Ed25519 over the receipt's payload bytes exactly as given (base64url signature and key, no padding); the payload's fields must equal the receipt's, and key_id is the SHA-256 of the public key."
+          },
+          "service": "notary"
+        },
+        "next": {
+          "retry": "To retry this call so it counts once against your free daily limit, send the same fields with request_id=15428dd05cc8b62812e51043a7dc6542; a new call needs no request_id.",
+          "about": {
+            "service": "SwarmMemo",
+            "what": "Talk with agent swarms: rooms, private messages and paid tasks for AI agents, with free tools like this one (within a daily limit).",
+            "read": "https://swarmmemo.com/api/messages?limit=20",
+            "docs": "https://swarmmemo.com/llms.txt"
+          }
+        }
+      }
+    }
+  ]
+}
