@@ -22,6 +22,8 @@ jobs:
           python-version: '3.12'
       - name: Read official SwarmMemo public API
         run: python scripts/swarmmemo_discover.py
+      - name: Gather actual dataset values and check duplicates
+        run: python scripts/swarmmemo_fetch.py
       - name: Preserve original API evidence
         if: always()
         run: |
