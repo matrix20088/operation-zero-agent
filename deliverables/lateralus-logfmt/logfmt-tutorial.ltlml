@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Structured Logging with stdlib.logfmt</title><link rel="stylesheet" href="../ltlml.css"></head>
+<body>
+<nav class="ltlml-nav"><span class="nav-brand">LATERALUS</span><a href="../index.ltlml">Home</a><a href="../tutorial.ltlml">Tutorial</a><a href="../cookbook.ltlml">Cookbook</a></nav>
+<div id="ltlml-render" class="ltlml-document"></div>
+<script id="ltlml-source" type="text/ltlml">
+---
+title: "Structured Logging with stdlib.logfmt"
+author: matrix20088
+date: 2026-11-16
+abstract: "A reproducible guide to key=value structured logs, including quoting and parsing."
+---
+
+# Logfmt for small structured logs
+
+Logfmt makes diagnostics easy for people and for parsers. Instead of an ambiguous message, it records key/value pairs:
+
+    level=warn msg="disk full" path=/var/log empty=""
+
+The module in stdlib/logfmt.ltl implements an encoder and parser; its integration tests in tests/stdlib_spiral_wave_6.ltl call the flat runtime functions logfmt_encode and logfmt_parse.
+
+## API
+
+- logfmt_encode(pairs) encodes a list of two-element [key, value] pairs, in their given order, without adding a newline.
+- logfmt_parse(line) parses fields into a list of [key, value] pairs.
+- logfmt_format_value(v) prepares a string value, quoting when it is empty or contains space, equals, or double quote.
+- logfmt_encode_map(map) encodes a map but does not promise a stable key order. Prefer explicit pairs for byte-for-byte fixtures.
+
+The module expects string values. Convert numeric values to strings before encoding; use simple keys without spaces or equals signs.
+
+## Executable example with pinned output
+
+Save the companion logfmt-tutorial-example.ltl and run it from the Lateralus repository root. The file contains:
+
+~~~lateralus
+fn main() {
+    let pairs = [["level", "warn"], ["msg", "disk full"], ["path", "/var/log"], ["empty", ""]]
+    let encoded = logfmt_encode(pairs)
+    let expected = "level=warn msg=\"disk full\" path=/var/log empty=\"\""
+    assert_eq(encoded, expected, "pinned vector")
+    let parsed = logfmt_parse(encoded)
+    assert_eq(parsed[1][1], "disk full", "round-trip")
+    print(encoded)
+}
+main()
+~~~
+
+Expected stdout (not a claimed runtime observation):
+
+    level=warn msg="disk full" path=/var/log empty=""
+
+The encoder quotes disk full because of the space and quotes an empty string. It leaves /var/log unquoted. The parser returns disk full without quote marks.
+
+## Escape rules and non-strict input
+
+When a quoted value contains a backslash or double quote, the encoder escapes it with a backslash. The parser consumes escaped characters in a quoted value. A bare key is accepted with an empty string as its value:
+
+~~~lateralus
+let p = logfmt_parse("a=1 b=\"two words\" c=\"q\\\"t\" flagged")
+assert_eq(p[1][1], "two words", "quoted space")
+assert_eq(p[3][1], "", "bare key is empty")
+~~~
+
+This is a convenience codec, not a hostile-input validator. The implementation does not provide detailed error reporting for every malformed quoted value, and duplicate keys remain separate pairs in the parsed list.
+
+## How to verify
+
+From the repository root:
+
+    python3 -m lateralus_lang run path/to/logfmt-tutorial-example.ltl
+
+The companion .ltl file uses assert_eq to compare its exact output vector and parsed fields. Refer to logfmt-expected.txt for the pinned stdout line.
+
+**Honest validation status:** This tutorial was checked against the published module source and existing integration tests, but the interpreter could not be executed in the authoring environment. No test-pass or merge is claimed.
+
+## Related source
+
+- stdlib/logfmt.ltl
+- tests/stdlib_spiral_wave_6.ltl
+- examples/spiral_telemetry.ltl
+</script><script src="../ltlml.js"></script>
+</body></html>
