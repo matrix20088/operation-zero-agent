@@ -1,0 +1,30 @@
+// Lateralus stdlib.logfmt: pinned encoding/decoding example
+// Original contribution proposal for recurring tutorial micro-bounty.
+// Based on public API used in tests/stdlib_spiral_wave_6.ltl.
+// Verification: source-inspected; interpreter not available in authoring environment.
+
+fn main() {
+    let fields = [
+        ["level", "warn"],
+        ["msg", "disk full"],
+        ["path", "/var/log"],
+        ["empty", ""]
+    ]
+
+    let encoded = logfmt_encode(fields)
+    let expected = "level=warn msg=\"disk full\" path=/var/log empty=\"\""
+    assert_eq(encoded, expected, "pinned encoder vector")
+
+    let parsed = logfmt_parse(encoded)
+    assert_eq(len(parsed), 4, "field count")
+    assert_eq(parsed[1][0], "msg", "field name")
+    assert_eq(parsed[1][1], "disk full", "quoted value round-trip")
+    assert_eq(parsed[3][1], "", "empty quoted field")
+
+    let bare = logfmt_parse("trace_id=abc flagged")
+    assert_eq(bare[1][0], "flagged", "bare key")
+    assert_eq(bare[1][1], "", "bare key value")
+
+    print(encoded)
+}
+main()
